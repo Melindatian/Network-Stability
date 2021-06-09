@@ -39,7 +39,7 @@
 #' 
 #'
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' set.seed(1)
 #' data(wine)
 #' x0 <- wine[1:50,]
@@ -47,6 +47,7 @@
 #' mytest<-threshold.select(data.input=x0,threshold.seq=seq(0.5,0.8,by=0.05), B=20, 
 #' cor.method='pearson',large.size=0,
 #' PermuNo = 10,
+#' no_cores=1,
 #' scheme_2 = FALSE)
 #' }
 #' @export
@@ -74,11 +75,11 @@ threshold.select <- function(data.input,threshold.seq, B=20,
   clusterExport(cl,'scheme2.module')
   clusterExport(cl,'agreement')
   clusterExport(cl,'scheme2.exp')
-  clusterExport(cl,'parelle.function')
+  clusterExport(cl,'network.stability')
   
   result<-foreach(k = threshold.seq ,
-                  .packages=c("igraph", "reshape2", "plyr", "qvalue",
-                              "wfg","geneplotter","dplyr","jaccard"),
+                  .packages=c("igraph", "reshape2", "plyr", 
+                              "dplyr"),
                   .options.multicore = mcoptions
   ) %dopar% {
     
